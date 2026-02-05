@@ -1,120 +1,190 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>运维保障中心值班表</title>
-    <style>
-        body {
-            font-family: "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
-            color: #333;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 2.2em;
-        }
-        .update-time {
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 1.1em;
-            margin-bottom: 30px;
-        }
-        .group {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-        .group h2 {
-            background: #3498db;
-            color: white;
-            margin: 0;
-            padding: 15px 20px;
-            font-size: 1.4em;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 14px 20px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        th {
-            background: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f9fbfc;
-        }
-        tr:hover {
-            background-color: #eef5ff;
-        }
-        @media (max-width: 768px) {
-            .container { padding: 10px; }
-            th, td { padding: 12px 15px; font-size: 0.95em; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>运维保障中心值班表</title>
+  <style>
+    :root {
+      --primary: #2563eb;       /* 主蓝 */
+      --primary-dark: #1e40af;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --border: #e2e8f0;
+      --hover: #eff6ff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .update-time {
+      font-size: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .groups {
+      display: grid;
+      gap: 24px;
+    }
+
+    .group-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .group-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .group-header {
+      background: var(--primary);
+      color: white;
+      padding: 14px 20px;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 14px 20px;
+      text-align: left;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    td {
+      border-bottom: 1px solid var(--border);
+      font-size: 1rem;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .role {
+      width: 120px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .name {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .phone {
+      font-family: monospace;
+      color: var(--primary-dark);
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background: var(--hover);
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 16px 12px; }
+      h1 { font-size: 1.75rem; }
+      .group-header { font-size: 1.125rem; padding: 12px 16px; }
+      th, td { padding: 12px 16px; font-size: 0.95rem; }
+      .role { width: 100px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>运维保障中心每日值班人员</h1>
-        <div class="update-time">最后更新: <span id="update-time"></span></div>
+  <div class="container">
+    <header>
+      <h1>运维保障中心每日值班人员</h1>
+      <div class="update-time">最后更新：<span id="update-time"></span></div>
+    </header>
 
-        <div id="groups"></div>
-    </div>
+    <div class="groups" id="groups"></div>
+  </div>
 
-    <script>
-        fetch('data.json')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('update-time').textContent = data.updateTime;
+  <script>
+    fetch('data.json')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('update-time').textContent = data.updateTime;
 
-                const container = document.getElementById('groups');
-                data.groups.forEach(group => {
-                    const section = document.createElement('div');
-                    section.className = 'group';
+        const container = document.getElementById('groups');
+        data.groups.forEach(group => {
+          const card = document.createElement('div');
+          card.className = 'group-card';
 
-                    let html = `<h2>${group.name}值班人员</h2>`;
-                    html += `<table>
-                        <tr>
-                            <th>角色</th>
-                            <th>姓名</th>
-                            <th>联系电话</th>
-                        </tr>
-                        <tr>
-                            <td>主值班</td>
-                            <td>${group.primary.name}</td>
-                            <td>${group.primary.phone}</td>
-                        </tr>
-                        <tr>
-                            <td>辅值班</td>
-                            <td>${group.secondary.name}</td>
-                            <td>${group.secondary.phone}</td>
-                        </tr>
-                    </table>`;
+          card.innerHTML = `
+            <div class="group-header">${group.name} 值班人员</div>
+            <table>
+              <thead>
+                <tr>
+                  <th class="role">角色</th>
+                  <th>姓名</th>
+                  <th>联系电话</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="role">主值班</td>
+                  <td class="name">${group.primary.name}</td>
+                  <td class="phone">${group.primary.phone}</td>
+                </tr>
+                <tr>
+                  <td class="role">辅值班</td>
+                  <td class="name">${group.secondary.name}</td>
+                  <td class="phone">${group.secondary.phone}</td>
+                </tr>
+              </tbody>
+            </table>
+          `;
 
-                    section.innerHTML = html;
-                    container.appendChild(section);
-                });
-            })
-            .catch(err => {
-                console.error('加载失败:', err);
-                document.getElementById('groups').innerHTML = '<p style="text-align:center;color:red;">数据加载失败，请检查 data.json 文件</p>';
-            });
-    </script>
+          container.appendChild(card);
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('groups').innerHTML = 
+          '<p style="text-align:center; color:#ef4444; padding:2rem;">数据加载失败，请检查 data.json</p>';
+      });
+  </script>
 </body>
 </html>

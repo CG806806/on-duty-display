@@ -1,25 +1,25 @@
 {
-    "updateTime": "2026-02-05",
-    "groups": [
-        {
-            "name": "公有云",
-            "primary": { "name": "黄艳强", "phone": "13888888888" },
-            "secondary": { "name": "黄艳强", "phone": "13888888888" }
-        },
-        {
-            "name": "数据库（DBA）",
-            "primary": { "name": "黄艳强", "phone": "13888888888" },
-            "secondary": { "name": "黄艳强", "phone": "13888888888" }
-        },
-        {
-            "name": "基础设施",
-            "primary": { "name": "黄艳强", "phone": "13888888888" },
-            "secondary": { "name": "黄艳强", "phone": "13888888888" }
-        },
-        {
-            "name": "产品运维",
-            "primary": { "name": "黄艳强", "phone": "13888888888"},
-            "secondary": {  "name": "黄艳强", "phone": "13888888888" }
-        }
-    ]
+  "updateTime": "2026-02-05",
+  "groups": [
+    {
+      "name": "公有云",
+      "primary": { "name": "黄艳强", "phone": "13888888888" },
+      "secondary": { "name": "黄艳强", "phone": "13888888888" }
+    },
+    {
+      "name": "数据库（DBA）",
+      "primary": { "name": "黄艳强", "phone": "13888888888" },
+      "secondary": { "name": "黄艳强", "phone": "13888888888" }
+    },
+    {
+      "name": "基础设施",
+      "primary": { "name": "黄艳强", "phone": "13888888888" },
+      "secondary": { "name": "黄艳强", "phone": "13888888888" }
+    },
+    {
+      "name": "产品运维",
+      "primary": { "name": "李四", "phone": "139xxxxxxxx" },
+      "secondary": { "name": "王五", "phone": "150xxxxxxxx" }
+    }
+  ]
 }
