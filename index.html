@@ -15,119 +15,102 @@
     }
 
     .container {
-      padding: 60px 4% 100px;   /* 左右留 4% 左右的边距，适中不贴边 */
+      padding: 40px 4% 60px;   /* 上下 padding 减小，左右 4% 保持铺满感 */
     }
 
     header {
       text-align: center;
-      margin-bottom: 60px;
+      margin-bottom: 40px;     /* 标题区高度压缩 */
     }
 
     h1 {
-      font-size: clamp(1.8rem, 5vw, 3rem);  /* 自适应字体大小 */
+      font-size: 2.2rem;
       font-weight: 700;
-      margin: 0 0 12px;
+      margin: 0 0 8px;
       color: #60a5fa;
-      text-shadow: 0 2px 12px rgba(96, 165, 250, 0.4);
+      text-shadow: 0 2px 8px rgba(96, 165, 250, 0.3);
     }
 
     .update {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: #94a3b8;
-      letter-spacing: 0.5px;
     }
 
     .duty-list {
       display: flex;
       flex-direction: column;
-      gap: 48px;
+      gap: 32px;               /* 分组间距减小 */
     }
 
     .duty-group {
-      background: rgba(30, 41, 59, 0.75);
-      border-radius: 16px;
-      border: 1px solid rgba(96, 165, 250, 0.3);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
-                  inset 0 0 25px rgba(96, 165, 250, 0.1);
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 12px;
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
       overflow: hidden;
-      backdrop-filter: blur(10px);
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
     }
 
     .duty-group:hover {
-      transform: translateY(-8px);
-      border-color: rgba(96, 165, 250, 0.6);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
-                  inset 0 0 35px rgba(96, 165, 250, 0.15);
+      border-color: #60a5fa;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
     }
 
     .group-title {
       background: linear-gradient(to right, #3b82f6, #60a5fa);
-      padding: 20px 32px;
-      font-size: clamp(1.3rem, 3vw, 1.6rem);
+      padding: 14px 24px;
+      font-size: 1.35rem;
       font-weight: 600;
       color: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    th, td {
+      padding: 14px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+    }
+
+    th {
+      background: rgba(30, 58, 138, 0.5);
+      color: #93c5fd;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    td.role {
+      width: 120px;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+
+    td.name {
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    td.phone {
+      font-family: 'Consolas', monospace;
+      color: #93c5fd;
+      font-size: 1.05rem;
       letter-spacing: 0.8px;
     }
 
-    .group-content {
-      padding: 32px 4% 40px;  /* 内部左右留白 */
-      display: flex;
-      justify-content: space-between;
-      gap: 40px;
-      flex-wrap: wrap;
+    tr:hover {
+      background: rgba(59, 130, 246, 0.15);
     }
 
-    .person-box {
-      flex: 1;
-      min-width: 320px;
-      padding: 24px;
-      background: rgba(15, 23, 42, 0.6);
-      border-radius: 12px;
-      border: 1px solid rgba(96, 165, 250, 0.25);
-      transition: all 0.2s ease;
-    }
-
-    .person-box:hover {
-      background: rgba(30, 58, 138, 0.4);
-      border-color: #93c5fd;
-    }
-
-    .person-box.primary {
-      background: rgba(30, 58, 138, 0.45);
-      border-color: #60a5fa;
-    }
-
-    .role-label {
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: #94a3b8;
-      margin-bottom: 10px;
-    }
-
-    .name {
-      font-size: clamp(1.2rem, 3vw, 1.5rem);
-      font-weight: 700;
-      color: #f1f5f9;
-      margin-bottom: 8px;
-    }
-
-    .phone {
-      font-size: clamp(1.15rem, 3vw, 1.4rem);
-      font-family: 'Consolas', monospace;
-      color: #93c5fd;
-      letter-spacing: 1.2px;
-      font-weight: 500;
-    }
-
-    @media (max-width: 900px) {
-      .group-content {
-        flex-direction: column;
-        gap: 28px;
-      }
-      .container {
-        padding: 50px 5% 80px;
-      }
+    @media (max-width: 768px) {
+      .container { padding: 30px 5% 50px; }
+      h1 { font-size: 1.8rem; }
+      .group-title { font-size: 1.2rem; padding: 12px 20px; }
+      th, td { padding: 12px 16px; font-size: 0.95rem; }
+      td.role { width: 100px; }
     }
   </style>
 </head>
@@ -156,18 +139,27 @@
 
           groupEl.innerHTML = `
             <div class="group-title">${group.name} 值班人员</div>
-            <div class="group-content">
-              <div class="person-box primary">
-                <div class="role-label">主值班</div>
-                <div class="name">${group.primary.name}</div>
-                <div class="phone">${group.primary.phone}</div>
-              </div>
-              <div class="person-box">
-                <div class="role-label">辅值班</div>
-                <div class="name">${group.secondary.name}</div>
-                <div class="phone">${group.secondary.phone}</div>
-              </div>
-            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th class="role">角色</th>
+                  <th>姓名</th>
+                  <th>联系电话</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="role">主值班</td>
+                  <td class="name">${group.primary.name}</td>
+                  <td class="phone">${group.primary.phone}</td>
+                </tr>
+                <tr>
+                  <td class="role">辅值班</td>
+                  <td class="name">${group.secondary.name}</td>
+                  <td class="phone">${group.secondary.phone}</td>
+                </tr>
+              </tbody>
+            </table>
           `;
 
           container.appendChild(groupEl);
@@ -176,7 +168,7 @@
       .catch(err => {
         console.error(err);
         document.getElementById('groups').innerHTML = 
-          '<div style="text-align:center; color:#f87171; font-size:1.4rem; padding:80px 0;">数据加载失败，请检查 data.json</div>';
+          '<p style="text-align:center; color:#f87171; font-size:1.3rem; padding:40px 0;">数据加载失败，请检查 data.json</p>';
       });
   </script>
 
