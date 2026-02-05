@@ -3,338 +3,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>运维保障中心 · 每日值班</title>
+  <title>运维保障中心每日值班表</title>
   <style>
     :root {
-      --primary-color: #2563eb;
-      --primary-bg: #eff6ff;
-      --secondary-text: #64748b;
-      --card-bg: #ffffff;
-      --bg-color: #f1f5f9;
-      --danger-color: #ef4444;
-      --text-main: #0f172a;
+      --bg-body: #f8fafc;        /* 极浅的灰背景，护眼 */
+      --bg-white: #ffffff;
+      --text-main: #1e293b;
+      --text-sub: #64748b;
+      --border-color: #e2e8f0;
+      --primary-color: #2563eb;  /* 科技蓝 */
+      --primary-light: #eff6ff;
+      --badge-primary-bg: #dbeafe;
+      --badge-primary-text: #1e40af;
+      --badge-sub-bg: #f1f5f9;
+      --badge-sub-text: #475569;
     }
-
-    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: var(--bg-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-body);
       color: var(--text-main);
       -webkit-font-smoothing: antialiased;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 900px; /* 限制最大宽度，表格太宽不好看 */
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 40px 20px 60px;
     }
 
-    /* 头部设计 */
+    /* 头部样式 */
     header {
-      margin-bottom: 40px;
-      text-align: left;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 30px;
       padding-bottom: 20px;
-    }
-
-    .header-left h1 {
-      margin: 0;
-      font-size: 1.75rem;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      color: #1e293b;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .header-left h1::before {
-      content: '';
-      display: block;
-      width: 6px;
-      height: 28px;
-      background: var(--primary-color);
-      border-radius: 4px;
-    }
-
-    .update-badge {
-      font-size: 0.875rem;
-      color: var(--secondary-text);
-      background: #e2e8f0;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-
-    /* 卡片网格布局 */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 24px;
-    }
-
-    /* 卡片主体 */
-    .card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.5);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-    }
-
-    /* 卡片标题栏 */
-    .card-header {
-      padding: 20px 24px;
-      border-bottom: 1px solid #f1f5f9;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .icon-box {
-      width: 40px;
-      height: 40px;
-      background: var(--primary-bg);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-color);
-    }
-
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin: 0;
-      color: #334155;
-    }
-
-    /* 人员列表区域 */
-    .duty-list {
-      padding: 0;
-      margin: 0;
-      list-style: none;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .duty-item {
-      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #f8fafc;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .duty-item:last-child {
-      border-bottom: none;
-      background-color: #fafbfd; /* 稍微深一点区分辅值班 */
-    }
-
-    /* 主值班特殊样式 */
-    .duty-item.primary {
-      background-color: #fff;
-    }
-
-    .person-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .role-badge {
-      font-size: 0.75rem;
-      text-transform: uppercase;
+    h1 {
+      font-size: 1.5rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
-      color: var(--secondary-text);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .duty-item.primary .role-badge {
-      color: var(--primary-color);
-    }
-    
-    .duty-item.primary .role-badge::before {
-      content: '●';
-      font-size: 0.6rem;
-    }
-
-    .person-name {
-      font-size: 1.1rem;
-      font-weight: 600;
+      margin: 0;
       color: #0f172a;
     }
 
-    /* 电话按钮 */
-    .phone-btn {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-family: 'SF Mono', 'Roboto Mono', monospace;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.2s;
+    .update-time {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      background: #fff;
+      padding: 6px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
     }
 
-    .duty-item.primary .phone-btn {
-      background-color: var(--primary-bg);
-      color: var(--primary-color);
-      border: 1px solid transparent;
+    /* 列表容器 */
+    .duty-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* 单个组的容器 */
+    .duty-section {
+      background: var(--bg-white);
+      border: 1px solid var(--border-color);
+      border-radius: 12px; /* 圆角表格容器 */
+      overflow: hidden;    /* 保证圆角不被内部内容切掉 */
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 极轻微的阴影 */
+    }
+
+    /* 组标题 */
+    .group-header {
+      background: #fff;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+    }
+
+    .group-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #334155;
+      position: relative;
+      padding-left: 14px;
+    }
+
+    /* 左侧蓝条装饰，增加设计感 */
+    .group-name::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 16px;
+      background: var(--primary-color);
+      border-radius: 2px;
+    }
+
+    /* 表格样式 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed; /* 固定布局，防止内容挤压 */
+    }
+
+    /* 表头 */
+    thead th {
+      background: #f8fafc;
+      color: var(--text-sub);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 12px 24px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    /* 表格行 */
+    tbody tr {
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.15s ease;
     }
     
-    .duty-item.primary .phone-btn:hover {
-      background-color: var(--primary-color);
-      color: white;
+    tbody tr:last-child {
+      border-bottom: none; /* 最后一行没底边框 */
     }
 
-    .duty-item.secondary .phone-btn {
-      color: var(--secondary-text);
-      background: white;
-      border: 1px solid #e2e8f0;
-      font-size: 0.9rem;
+    tbody tr:hover {
+      background-color: #f8fafc; /* 鼠标悬停高亮 */
     }
 
-    .duty-item.secondary .phone-btn:hover {
-      border-color: var(--secondary-text);
-      color: #334155;
+    td {
+      padding: 16px 24px;
+      vertical-align: middle;
     }
 
-    /* 错误提示 */
-    .error-msg {
-      text-align: center;
-      padding: 60px;
-      color: var(--danger-color);
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    /* 角色标签样式 */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      line-height: 1;
     }
 
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <header>
-      <div class="header-left">
-        <h1>运维保障中心值班表</h1>
-      </div>
-      <div class="update-badge">
-        📅 更新于：<span id="update-time">Loading...</span>
-      </div>
-    </header>
-
-    <div class="grid" id="groups-container">
-      <!-- 卡片将通过 JS 渲染在这里 -->
-    </div>
-  </div>
-
-  <script>
-    // 定义一些图标 (SVG 字符串)，让界面更生动
-    const icons = {
-      default: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>`, // 默认显示器图标
-      cloud: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>`,
-      db: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>`,
-      infra: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>`,
-      ops: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>`
-    };
-
-    // 简单的关键词匹配来选择图标
-    function getIcon(name) {
-      if (name.includes('云')) return icons.cloud;
-      if (name.includes('数据库') || name.includes('DB')) return icons.db;
-      if (name.includes('基础') || name.includes('设施')) return icons.infra;
-      if (name.includes('运维') || name.includes('产品')) return icons.ops;
-      return icons.default;
+    .badge.primary {
+      background: var(--badge-primary-bg);
+      color: var(--badge-primary-text);
     }
 
-    fetch('data.json')
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('update-time').textContent = data.updateTime;
-        const container = document.getElementById('groups-container');
-        
-        // 渲染卡片
-        data.groups.forEach(group => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          
-          const iconSvg = getIcon(group.name);
+    .badge.secondary {
+      background: var(--badge-sub-bg);
+      color: var(--badge-sub-text);
+    }
 
-          card.innerHTML = `
-            <div class="card-header">
-              <div class="icon-box">${iconSvg}</div>
-              <h3 class="card-title">${group.name}</h3>
-            </div>
-            
-            <ul class="duty-list">
-              <!-- 主值班人员 -->
-              <li class="duty-item primary">
-                <div class="person-info">
-                  <span class="role-badge">Primary On-Call</span>
-                  <span class="person-name">${group.primary.name}</span>
-                </div>
-                <a href="tel:${group.primary.phone}" class="phone-btn">
-                  ${group.primary.phone}
-                </a>
-              </li>
-              
-              <!-- 辅值班人员 -->
-              <li class="duty-item secondary">
-                <div class="person-info">
-                  <span class="role-badge">Backup</span>
-                  <span class="person-name">${group.secondary.name}</span>
-                </div>
-                <a href="tel:${group.secondary.phone}" class="phone-btn">
-                  ${group.secondary.phone}
-                </a>
-              </li>
-            </ul>
-          `;
-          
-          container.appendChild(card);
-        });
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('groups-container').innerHTML = `
-          <div class="error-msg">
-            <h3>⚠️ 数据加载异常</h3>
-            <p>无法读取值班数据，请检查网络或 data.json 文件。</p>
-          </div>
-        `;
-        document.getElementById('groups-container').style.display = 'block'; // 取消 grid 布局以便居中
-      });
-  </script>
-</body>
-</html>
+    /* 姓名 */
+    .name-text {
+      font-weight: 600;
+      color: var(--text-main);
+      font-size: 1rem;
+    }
