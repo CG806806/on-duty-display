@@ -2,19 +2,24 @@
     "updateTime": "2026-02-05",
     "groups": [
         {
-            "name": "公有云值班人员",
+            "name": "公有云",
             "primary": { "name": "黄艳强", "phone": "13888888888" },
             "secondary": { "name": "黄艳强", "phone": "13888888888" }
         },
         {
-            "name": "DBA值班人员",
-            "primary": { "name": "黄艳强", "phone": "13888888888"  },
-            "secondary": {  "name": "黄艳强", "phone": "13888888888" }
+            "name": "数据库（DBA）",
+            "primary": { "name": "黄艳强", "phone": "13888888888" },
+            "secondary": { "name": "黄艳强", "phone": "13888888888" }
         },
         {
-            "name": "基础设施值班人员",
-            "primary": {  "name": "黄艳强", "phone": "13888888888" },
-            "secondary": {  "name": "黄艳强", "phone": "13888888888"  }
+            "name": "基础设施",
+            "primary": { "name": "黄艳强", "phone": "13888888888" },
+            "secondary": { "name": "黄艳强", "phone": "13888888888" }
+        },
+        {
+            "name": "产品运维",
+            "primary": { "name": "黄艳强", "phone": "13888888888"},
+            "secondary": {  "name": "黄艳强", "phone": "13888888888" }
         }
     ]
 }

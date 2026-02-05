@@ -5,72 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>运维保障中心值班表</title>
     <style>
-        body { 
-            font-family: "Microsoft YaHei", Arial, sans-serif; 
-            margin: 20px; 
-            background: #f9f9f9; 
+        body {
+            font-family: "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
+            color: #333;
+            line-height: 1.6;
         }
-        h1 { 
-            text-align: center; 
-            color: #333; 
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
         }
-        .group { 
-            margin: 20px 0; 
-            padding: 15px; 
-            background: white; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2em;
         }
-        .group h2 { 
-            margin: 0 0 10px; 
-            color: #2c3e50; 
+        .update-time {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 30px;
         }
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
+        .group {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
         }
-        th, td { 
-            border: 1px solid #ddd; 
-            padding: 10px; 
-            text-align: left; 
+        .group h2 {
+            background: #3498db;
+            color: white;
+            margin: 0;
+            padding: 15px 20px;
+            font-size: 1.4em;
         }
-        th { 
-            background-color: #ecf0f1; 
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .update-time { 
-            text-align: right; 
-            color: #7f8c8d; 
-            font-style: italic; 
+        th, td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9fbfc;
+        }
+        tr:hover {
+            background-color: #eef5ff;
+        }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            th, td { padding: 12px 15px; font-size: 0.95em; }
         }
     </style>
 </head>
 <body>
-    <h1>运维保障中心每日值班人员</h1>
-    <p class="update-time">最后更新: <span id="update-time"></span></p>
-    
-    <div id="groups"></div>
+    <div class="container">
+        <h1>运维保障中心每日值班人员</h1>
+        <div class="update-time">最后更新: <span id="update-time"></span></div>
+
+        <div id="groups"></div>
+    </div>
 
     <script>
         fetch('data.json')
             .then(res => res.json())
             .then(data => {
                 document.getElementById('update-time').textContent = data.updateTime;
+
                 const container = document.getElementById('groups');
-                data.groups.forEach(g => {
-                    const div = document.createElement('div');
-                    div.className = 'group';
-                    div.innerHTML = `
-                        <h2>${g.name}</h2>
-                        <table>
-                            <tr><th>角色</th><th>姓名</th><th>联系电话</th></tr>
-                            <tr><td>主值班</td><td>${g.primary.name}</td><td>${g.primary.phone}</td></tr>
-                            <tr><td>辅值班</td><td>${g.secondary.name}</td><td>${g.secondary.phone}</td></tr>
-                        </table>
-                    `;
-                    container.appendChild(div);
+                data.groups.forEach(group => {
+                    const section = document.createElement('div');
+                    section.className = 'group';
+
+                    let html = `<h2>${group.name}值班人员</h2>`;
+                    html += `<table>
+                        <tr>
+                            <th>角色</th>
+                            <th>姓名</th>
+                            <th>联系电话</th>
+                        </tr>
+                        <tr>
+                            <td>主值班</td>
+                            <td>${group.primary.name}</td>
+                            <td>${group.primary.phone}</td>
+                        </tr>
+                        <tr>
+                            <td>辅值班</td>
+                            <td>${group.secondary.name}</td>
+                            <td>${group.secondary.phone}</td>
+                        </tr>
+                    </table>`;
+
+                    section.innerHTML = html;
+                    container.appendChild(section);
                 });
             })
-            .catch(err => console.error('加载失败:', err));
+            .catch(err => {
+                console.error('加载失败:', err);
+                document.getElementById('groups').innerHTML = '<p style="text-align:center;color:red;">数据加载失败，请检查 data.json 文件</p>';
+            });
     </script>
 </body>
 </html>
