@@ -5,216 +5,168 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>运维保障中心每日值班表</title>
   <style>
-    :root {
-      --bg-page: #f9fafb;
-      --header-blue: #2563eb;
-      --border-color: #d1d5db;
-      --text-main: #111827;
-      --cell-bg-head: #f3f4f6;
-    }
-
     body {
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Segoe UI", sans-serif;
-      background: var(--bg-page);
-      color: var(--text-main);
-      font-size: 14px;
-    }
-
-    /* 顶部警示条 */
-    .top-alert-bar {
-      width: 100%;
-      background-color: #fef2f2;
-      color: #dc2626;
-      text-align: center;
-      padding: 10px 0;
-      font-size: 14px;
-      font-weight: 600;
-      border-bottom: 1px solid #fee2e2;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #ffffff;
+      color: #1e293b;
+      min-height: 100vh;
     }
 
     .container {
-      /* 修改点1：宽度设为 96% 并去掉很小的 max-width，让表格横向铺满屏幕 */
-      width: 96%;
-      max-width: 1600px; /* 在超大显示器上稍微限制一下，避免太扁 */
-      margin: 30px auto;
+      padding: 40px 4% 60px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 36px;
     }
 
     h1 {
-      color: #1e40af;
-      font-size: 24px;
-      margin: 0 0 8px 0;
+      font-size: 2.1rem;
       font-weight: 700;
+      margin: 0 0 8px;
+      color: #1d4ed8;
     }
 
-    .update-time {
-      color: #6b7280;
-      font-size: 12px;
+    .update {
+      font-size: 1rem;
+      color: #64748b;
     }
 
-    /* --- 表格样式 --- */
-    .excel-table {
-      width: 100%; /* 表格自身宽度100%撑满容器 */
-      border-collapse: collapse;
-      margin-bottom: 30px;
-      background: #fff;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    .duty-list {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
     }
 
-    .excel-table th, 
-    .excel-table td {
-      border: 1px solid var(--border-color);
-      padding: 12px 15px;
-      text-align: left; /* 默认左对齐，但下面会单独覆盖标题行 */
+    .duty-group {
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      transition: all 0.2s ease;
     }
 
-    /* 修改点2：组名标题行样式 */
-    .group-header-row th {
-      background-color: var(--header-blue);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      padding: 14px;
-      
-      /* 核心修改：文字居中 */
-      text-align: center !important; 
+    .duty-group:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      border-color: #3b82f6;
     }
 
-    /* 列标题 (角色/姓名/电话) */
-    .column-header-row th {
-      background-color: var(--cell-bg-head);
-      color: #374151;
+    .group-title {
+      background: #3b82f6;
+      padding: 14px 24px;
+      font-size: 1.3rem;
       font-weight: 600;
-      font-size: 13px;
-      text-align: center; /* 列头也居中稍微好看点，或者你可以保留left */
-    }
-    
-    /* 调整列宽比例，让表格分布更均匀 */
-    .column-header-row th:nth-child(1) { width: 20%; } /* 角色 */
-    .column-header-row th:nth-child(2) { width: 30%; } /* 姓名 */
-    .column-header-row th:nth-child(3) { width: 50%; } /* 电话 */
-
-    /* 数据行 */
-    .data-row td {
-      font-size: 14px;
-      color: #1f2937;
-    }
-    
-    /* 让表格内容稍微有些留白，看着不累 */
-    .data-row td {
-      padding: 16px; 
+      color: white;
     }
 
-    /* 角色列居中显示，更像Excel */
-    .data-row td:first-child {
-        text-align: center;
-        font-weight: 600;
-        color: #4b5563;
-    }
-    
-    .is-primary td:first-child {
-        color: #2563eb;
+    table {
+      width: 100%;
+      border-collapse: collapse;
     }
 
-    .name-cell {
+    th, td {
+      padding: 14px 20px;
+      text-align: left;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    td.role {
+      width: 110px;
+      color: #475569;
       font-weight: 500;
-      text-align: center; /* 姓名也居中 */
     }
 
-    .phone-cell {
-        text-align: center; /* 电话也居中 */
+    td.name {
+      font-weight: 600;
+      color: #0f172a;
     }
 
-    .phone-link {
-      font-family: Consolas, "Courier New", monospace;
-      color: #111827;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 15px; /* 电话号码稍微大一点点 */
-    }
-    
-    .phone-link:hover {
-      text-decoration: underline;
-      color: var(--header-blue);
+    td.phone {
+      font-family: Consolas, monospace;
+      color: #1d4ed8;
+      font-size: 1.05rem;
+      letter-spacing: 0.6px;
     }
 
-    #error-box { display: none; color: red; text-align: center; margin: 20px; }
+    tr:hover {
+      background: #f0f9ff;
+    }
 
-    @media (max-width: 600px) {
-      .container { width: 100%; padding: 0 10px; }
+    @media (max-width: 768px) {
+      .container { padding: 30px 5% 50px; }
+      h1 { font-size: 1.8rem; }
+      .group-title { font-size: 1.2rem; padding: 12px 20px; }
+      th, td { padding: 12px 16px; font-size: 0.95rem; }
+      td.role { width: 100px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="top-alert-bar">
-    ⚠️ 如遇紧急故障请直接拨打主值班电话
-  </div>
-
   <div class="container">
     <header>
-      <h1>运维保障中心每日值班表</h1>
-      <div class="update-time">更新时间：<span id="update-time">...</span></div>
+      <h1>运维保障中心每日值班人员</h1>
+      <div class="update">最后更新：<span id="update-time"></span></div>
     </header>
 
-    <div id="error-box"></div>
-    <div id="tables-container"></div>
+    <div class="duty-list" id="groups"></div>
   </div>
 
   <script>
-    fetch('./data.json?t=' + new Date().getTime())
+    fetch('data.json')
       .then(res => res.json())
       .then(data => {
         document.getElementById('update-time').textContent = data.updateTime;
-        const container = document.getElementById('tables-container');
-        container.innerHTML = '';
 
-        if (!data.groups) return;
+        const container = document.getElementById('groups');
 
         data.groups.forEach(group => {
-          const table = document.createElement('table');
-          table.className = 'excel-table';
+          const groupEl = document.createElement('div');
+          groupEl.className = 'duty-group';
 
-          table.innerHTML = `
-            <thead>
-              <tr class="group-header-row">
-                <!-- colspan=3 保证蓝条横跨整个表格 -->
-                <th colspan="3">${group.name}</th>
-              </tr>
-              <tr class="column-header-row">
-                <th>角色</th>
-                <th>姓名</th>
-                <th>联系电话</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="data-row is-primary">
-                <td>主值班 (Primary)</td>
-                <td class="name-cell">${group.primary.name}</td>
-                <td class="phone-cell"><a href="tel:${group.primary.phone}" class="phone-link">${group.primary.phone}</a></td>
-              </tr>
-              <tr class="data-row">
-                <td>辅值班 (Secondary)</td>
-                <td class="name-cell">${group.secondary.name}</td>
-                <td class="phone-cell"><a href="tel:${group.secondary.phone}" class="phone-link">${group.secondary.phone}</a></td>
-              </tr>
-            </tbody>
+          groupEl.innerHTML = `
+            <div class="group-title">${group.name} 值班人员</div>
+            <table>
+              <thead>
+                <tr>
+                  <th class="role">角色</th>
+                  <th>姓名</th>
+                  <th>联系电话</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="role">主值班</td>
+                  <td class="name">${group.primary.name}</td>
+                  <td class="phone">${group.primary.phone}</td>
+                </tr>
+                <tr>
+                  <td class="role">辅值班</td>
+                  <td class="name">${group.secondary.name}</td>
+                  <td class="phone">${group.secondary.phone}</td>
+                </tr>
+              </tbody>
+            </table>
           `;
-          
-          container.appendChild(table);
+
+          container.appendChild(groupEl);
         });
       })
       .catch(err => {
-        const box = document.getElementById('error-box');
-        box.style.display = 'block';
-        box.innerHTML = '⚠️ 数据加载失败: ' + err.message;
+        console.error(err);
+        document.getElementById('groups').innerHTML = 
+          '<p style="text-align:center; color:#ef4444; font-size:1.2rem; padding:30px 0;">数据加载失败，请检查 data.json</p>';
       });
   </script>
 
