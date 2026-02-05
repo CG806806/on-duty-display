@@ -15,44 +15,43 @@
     }
 
     .container {
-      padding: 30px 2% 40px;
+      padding: 20px 1.5% 30px;         /* 极致压缩上下留白 */
     }
 
     header {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
 
     h1 {
-      font-size: 1.9rem;
+      font-size: 1.65rem;
       font-weight: 700;
-      margin: 0 0 6px;
-      color: #1d4ed8;
+      margin: 0 0 4px;
+      color: #1e40af;
     }
 
     .update {
-      font-size: 0.92rem;
-      color: #64748b;
+      font-size: 0.88rem;
+      color: #6b7280;
     }
 
     .duty-list {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 18px;                       /* 分组间距最小化 */
     }
 
     .duty-group {
       background: #ffffff;
       border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e5e7eb;
       overflow: hidden;
     }
 
     .group-title {
-      background: #3b82f6;
-      padding: 11px 0;
-      font-size: 1.2rem;
+      background: #1e40af;             /* 标题栏深蓝 */
+      padding: 9px 0;
+      font-size: 1.15rem;
       font-weight: 600;
       color: white;
       text-align: center;
@@ -65,54 +64,46 @@
     }
 
     th, td {
-      padding: 9px 14px;
-      border: 1px solid #e2e8f0;
-      font-size: 0.9rem;
+      padding: 8px 12px;
+      border: 1px solid #e5e7eb;
+      font-size: 0.88rem;
     }
 
     th {
-      background: #eff6ff;
-      color: #1d4ed8;
-      font-weight: 700;
-      font-size: 0.95rem;
+      background: #f3f4f6;
+      color: #374151;
+      font-weight: 600;
     }
 
     td.role {
-      width: 110px;
-      color: #475569;
+      width: 100px;
+      color: #4b5563;
       font-weight: 500;
     }
 
     td.name {
-      font-weight: 800;                /* 姓名加粗突出 */
-      font-size: 1.02rem;
-      color: #0f172a;
+      font-weight: 700;                /* 姓名突出 */
+      color: #111827;
     }
 
     td.phone {
       font-family: Consolas, monospace;
-      font-size: 1.05rem;              /* 电话稍大 */
-      font-weight: 700;
-      color: #1d4ed8;                  /* 电话醒目蓝 */
-      letter-spacing: 0.5px;
-    }
-
-    tr.primary-row {
-      background: #f0f9ff;             /* 主值班行浅蓝背景，突出 */
+      font-size: 0.95rem;
       font-weight: 600;
+      color: #dc2626;                  /* 手机号醒目红色，与标题区分 */
+      letter-spacing: 0.4px;
     }
 
     tr:hover {
-      background: #e0f2fe;
+      background: #f9fafb;
     }
 
     @media (max-width: 768px) {
-      .container { padding: 24px 3% 32px; }
-      h1 { font-size: 1.7rem; }
-      .group-title { font-size: 1.1rem; padding: 10px 0; }
-      th, td { padding: 8px 10px; font-size: 0.88rem; }
-      td.name { font-size: 0.98rem; }
-      td.phone { font-size: 1rem; }
+      .container { padding: 16px 2% 24px; }
+      h1 { font-size: 1.5rem; }
+      .group-title { font-size: 1.05rem; padding: 8px 0; }
+      th, td { padding: 7px 10px; font-size: 0.85rem; }
+      td.phone { font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -150,7 +141,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="primary-row">
+                <tr>
                   <td>主值班</td>
                   <td class="name">${group.primary.name}</td>
                   <td class="phone">${group.primary.phone}</td>
@@ -170,7 +161,7 @@
       .catch(err => {
         console.error(err);
         document.getElementById('groups').innerHTML = 
-          '<p style="text-align:center; color:#ef4444; font-size:1.1rem; padding:30px 0;">数据加载失败，请检查 data.json</p>';
+          '<p style="text-align:center; color:#ef4444; font-size:1.1rem; padding:20px 0;">数据加载失败，请检查 data.json</p>';
       });
   </script>
 
