@@ -15,44 +15,44 @@
     }
 
     .container {
-      padding: 24px 2% 32px;           /* 上下留白大幅减少 */
+      padding: 30px 2% 40px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     h1 {
-      font-size: 1.7rem;               /* 标题进一步缩小 */
+      font-size: 1.9rem;
       font-weight: 700;
-      margin: 0 0 4px;
+      margin: 0 0 6px;
       color: #1d4ed8;
     }
 
     .update {
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       color: #64748b;
     }
 
     .duty-list {
       display: flex;
       flex-direction: column;
-      gap: 20px;                       /* 分组间距最小化 */
+      gap: 24px;
     }
 
     .duty-group {
       background: #ffffff;
       border-radius: 8px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
       overflow: hidden;
     }
 
     .group-title {
       background: #3b82f6;
-      padding: 10px 0;
-      font-size: 1.15rem;              /* 标题栏字体缩小 */
+      padding: 11px 0;
+      font-size: 1.2rem;
       font-weight: 600;
       color: white;
       text-align: center;
@@ -65,36 +65,54 @@
     }
 
     th, td {
-      padding: 8px 12px;               /* 表格行高大幅压缩 */
+      padding: 9px 14px;
       border: 1px solid #e2e8f0;
-      font-size: 0.88rem;              /* 文字更小，但仍清晰 */
+      font-size: 0.9rem;
     }
 
     th {
-      background: #f8fafc;
-      color: #334155;
-      font-weight: 600;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 700;
+      font-size: 0.95rem;
     }
 
-    td {
+    td.role {
+      width: 110px;
+      color: #475569;
+      font-weight: 500;
+    }
+
+    td.name {
+      font-weight: 800;                /* 姓名加粗突出 */
+      font-size: 1.02rem;
       color: #0f172a;
     }
 
     td.phone {
       font-family: Consolas, monospace;
-      color: #1d4ed8;
-      font-weight: 500;
+      font-size: 1.05rem;              /* 电话稍大 */
+      font-weight: 700;
+      color: #1d4ed8;                  /* 电话醒目蓝 */
+      letter-spacing: 0.5px;
+    }
+
+    tr.primary-row {
+      background: #f0f9ff;             /* 主值班行浅蓝背景，突出 */
+      font-weight: 600;
     }
 
     tr:hover {
-      background: #f0f9ff;
+      background: #e0f2fe;
     }
 
     @media (max-width: 768px) {
-      .container { padding: 20px 3% 30px; }
-      h1 { font-size: 1.5rem; }
-      .group-title { font-size: 1.05rem; padding: 8px 0; }
-      th, td { padding: 6px 10px; font-size: 0.82rem; }
+      .container { padding: 24px 3% 32px; }
+      h1 { font-size: 1.7rem; }
+      .group-title { font-size: 1.1rem; padding: 10px 0; }
+      th, td { padding: 8px 10px; font-size: 0.88rem; }
+      td.name { font-size: 0.98rem; }
+      td.phone { font-size: 1rem; }
     }
   </style>
 </head>
@@ -132,15 +150,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr class="primary-row">
                   <td>主值班</td>
-                  <td>${group.primary.name}</td>
-                  <td>${group.primary.phone}</td>
+                  <td class="name">${group.primary.name}</td>
+                  <td class="phone">${group.primary.phone}</td>
                 </tr>
                 <tr>
                   <td>辅值班</td>
-                  <td>${group.secondary.name}</td>
-                  <td>${group.secondary.phone}</td>
+                  <td class="name">${group.secondary.name}</td>
+                  <td class="phone">${group.secondary.phone}</td>
                 </tr>
               </tbody>
             </table>
@@ -152,7 +170,7 @@
       .catch(err => {
         console.error(err);
         document.getElementById('groups').innerHTML = 
-          '<p style="text-align:center; color:#ef4444; font-size:1.1rem; padding:20px 0;">数据加载失败，请检查 data.json</p>';
+          '<p style="text-align:center; color:#ef4444; font-size:1.1rem; padding:30px 0;">数据加载失败，请检查 data.json</p>';
       });
   </script>
 
