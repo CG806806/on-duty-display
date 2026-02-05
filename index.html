@@ -6,234 +6,178 @@
   <title>运维保障中心每日值班表</title>
   <style>
     :root {
-      --bg-body: #f3f4f6;          /* 页面背景灰，为了衬托白卡片 */
-      --card-bg: #ffffff;
-      --primary-blue: #2563eb;
+      --bg-page: #f0f2f5;
+      --bg-card: #ffffff;
+      --header-blue: #3b82f6;
+      --border-color: #e5e7eb;
       --text-main: #1f2937;
       --text-sub: #6b7280;
-      --border-light: #e5e7eb;
+      --inner-card-bg: #f8fafc; 
+      --inner-card-border: #e2e8f0;
     }
 
     body {
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif;
-      background: var(--bg-body);
+      font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif;
+      background: var(--bg-page);
       color: var(--text-main);
     }
 
-    .container {
-      width: 96%;           /* 铺满全屏 */
-      max-width: 1600px;    /*在大屏上别太宽，限制一下 */
-      margin: 30px auto;
+    /* 1. 顶部全宽通栏 (Global Alert) */
+    .top-alert-bar {
+      width: 100%;
+      background-color: #fef2f2; /* 极浅的红色背景 */
+      color: #dc2626;            /* 警示红文字 */
+      text-align: center;
+      padding: 12px 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-bottom: 1px solid #fee2e2;
+      /* 确保它在最顶层 */
+      position: relative;
+      z-index: 10;
     }
 
-    /* 顶部标题区 */
+    .container {
+      max-width: 1000px;
+      margin: 30px auto; /* 上下留白 */
+      padding: 0 20px;
+    }
+
+    /* 标题区域 */
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      text-align: center;
       margin-bottom: 30px;
     }
 
     h1 {
-      margin: 0;
-      font-size: 1.6rem;
-      color: #111827;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      color: #2563eb;
+      font-size: 2rem;
+      margin: 0 0 8px 0;
+      font-weight: 800;
     }
 
-    h1::before {
-      content: '';
-      display: block;
-      width: 8px;
-      height: 24px;
-      background: var(--primary-blue);
-      border-radius: 4px;
-    }
-
-    .update-tag {
-      background: #e0e7ff;
-      color: #3730a3;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-weight: 600;
+    .update-time {
+      color: var(--text-sub);
       font-size: 0.9rem;
     }
 
-    /* --- 关键布局：模拟表格表头 --- */
-    /* 为了保证下面的卡片内容对齐，我们做一个看不见的“表头行” */
-    .grid-header {
-      display: grid;
-      /* 定义列宽：组名20%，角色10%，姓名20%，电话剩余 */
-      grid-template-columns: 200px 120px 200px 1fr; 
-      padding: 0 24px 10px;
-      color: var(--text-sub);
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    /* 每一个业务组是一个独立的卡片 */
-    .duty-card {
-      background: var(--card-bg);
+    /* 2. 业务组大卡片 */
+    .group-card {
+      background: var(--bg-card);
       border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* 柔和阴影 */
-      margin-bottom: 24px;   /* 这里就是你想要的“空白间隔” */
-      overflow: hidden;
-      display: flex;         /* 左边标题，右边详情 */
-      border: 1px solid var(--border-light);
+      overflow: hidden; 
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px; /* 卡片之间的间距 */
+      border: 1px solid var(--border-color);
     }
 
-    /* 左侧：组名区 */
-    .card-left {
-      width: 200px;         /* 必须和上面的 grid-template-columns 第一列一致 */
-      background: #f8fafc;  /* 浅灰背景 */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid var(--border-light);
-      padding: 20px;
-      flex-shrink: 0;       /* 防止被挤压 */
-    }
-
-    .group-title {
-      font-size: 1.2rem;
+    /* 业务组标题栏 */
+    .group-header {
+      background: var(--header-blue);
+      color: white;
+      padding: 15px 25px;
+      font-size: 1.25rem;
       font-weight: 700;
-      color: #0f172a;
-      text-align: center;
+      letter-spacing: 0.5px;
     }
 
-    /* 右侧：人员列表区 */
-    .card-right {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* 每一行人员数据 */
-    .duty-row {
+    /* 内容区域容器 */
+    .card-body {
+      padding: 25px;
       display: grid;
-      /* 这里的列宽要和 .grid-header 对应 (排除了第一列) */
-      grid-template-columns: 120px 200px 1fr;
-      align-items: center;
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border-light);
-      transition: background 0.2s;
+      grid-template-columns: 1fr 1fr; /* 左右两栏布局 */
+      gap: 25px;
     }
 
-    .duty-row:last-child {
-      border-bottom: none;
+    /* 3. 内部人员小卡片 */
+    .person-box {
+      background: var(--inner-card-bg);
+      border: 1px solid var(--inner-card-border);
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+      transition: all 0.2s;
     }
-
-    .duty-row:hover {
-      background: #fefeff;
+    
+    .person-box:hover {
+      border-color: var(--header-blue);
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
     }
 
     /* 角色标签 */
-    .role-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 80px;
-      padding: 6px 0;
-      border-radius: 6px;
+    .role-label {
       font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+      display: block;
       font-weight: 600;
+      text-transform: uppercase;
     }
 
-    .is-primary .role-badge {
-      background: #eff6ff;
-      color: #2563eb;
-      border: 1px solid #dbeafe;
-    }
-
-    .is-secondary .role-badge {
-      background: #f3f4f6;
-      color: #4b5563;
-      border: 1px solid #e5e7eb;
-    }
+    .is-primary .role-label { color: var(--header-blue); }
+    .person-box.is-primary { background: #eff6ff; border-color: #dbeafe; }
 
     /* 姓名 */
-    .name-text {
-      font-size: 1.1rem;
-      font-weight: 600;
+    .person-name {
+      font-size: 1.5rem;
+      font-weight: 800;
       color: #111827;
+      margin-bottom: 4px;
+      display: block;
     }
 
     /* 电话 */
-    .phone-text {
+    .person-phone {
       font-family: Consolas, Monaco, monospace;
       font-size: 1.2rem;
-      font-weight: 600;
-      color: #374151;
+      color: #4b5563;
       text-decoration: none;
-      letter-spacing: 0.5px;
-    }
-    
-    .phone-text:hover {
-      color: var(--primary-blue);
+      font-weight: 600;
+      letter-spacing: 1px;
     }
 
-    /* 错误提示框 */
-    #error-box { display: none; padding: 20px; background: #fee2e2; color: #dc2626; text-align: center; margin-bottom: 20px; border-radius: 8px;}
+    .person-phone:hover {
+      color: var(--header-blue);
+      text-decoration: underline;
+    }
+
+    /* 错误提示 */
+    #error-box { display: none; color: red; text-align: center; margin: 20px; }
 
     /* 移动端适配 */
-    @media (max-width: 800px) {
-      .grid-header { display: none; } /* 手机端隐藏表头 */
-      
-      .duty-card { flex-direction: column; }
-      
-      .card-left { 
-        width: 100%; 
-        padding: 12px; 
-        background: #ebf5ff; /* 手机上标题变成蓝色条 */
-        border-right: none;
-        border-bottom: 1px solid var(--border-light);
-        justify-content: flex-start;
-      }
-      
-      .duty-row {
-        grid-template-columns: 80px 100px 1fr; /* 调整列宽 */
-        padding: 16px;
-        gap: 10px;
-        font-size: 0.9rem;
-      }
-      
-      .phone-text { font-size: 1rem; }
-      .name-text { font-size: 1rem; }
+    @media (max-width: 768px) {
+      .card-body { grid-template-columns: 1fr; gap: 15px; }
+      h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
+  <!-- 1. 全局通栏提示 (移到这里，不占中间位置) -->
+  <div class="top-alert-bar">
+    ⚠️ 如遇紧急故障请直接拨打主值班电话
+  </div>
+
   <div class="container">
     <header>
-      <h1>运维保障中心 · 值班看板</h1>
-      <div class="update-tag">更新时间：<span id="update-time">...</span></div>
+      <h1>运维保障中心每日值班人员</h1>
+      <div class="update-time">最后更新：<span id="update-time">...</span></div>
     </header>
 
     <div id="error-box"></div>
 
-    <!-- 这是一个伪装的表头，用来对齐下面的卡片内容 -->
-    <div class="grid-header">
-      <div>业务分组</div>
-      <div>角色</div>
-      <div>姓名</div>
-      <div>联系电话</div>
-    </div>
-
     <div id="groups-container">
-      <!-- JS 生成的内容将放在这里 -->
+      <!-- 卡片列表 -->
     </div>
   </div>
 
   <script>
     fetch('./data.json?t=' + new Date().getTime())
       .then(res => {
-        if (!res.ok) throw new Error('文件读取失败');
+        if (!res.ok) throw new Error('Network response was not ok');
         return res.json();
       })
       .then(data => {
@@ -244,41 +188,32 @@
         if (!data.groups) return;
 
         data.groups.forEach(group => {
-          // 每个组是一个独立的卡片 div
-          const card = document.createElement('div');
-          card.className = 'duty-card';
+          const groupCard = document.createElement('div');
+          groupCard.className = 'group-card';
 
-          card.innerHTML = `
-            <!-- 左侧：组名 -->
-            <div class="card-left">
-              <div class="group-title">${group.name}</div>
-            </div>
-            
-            <!-- 右侧：两行数据 -->
-            <div class="card-right">
-              <!-- 主值班行 -->
-              <div class="duty-row is-primary">
-                <div><span class="role-badge">主值班</span></div>
-                <div class="name-text">${group.primary.name}</div>
-                <div><a href="tel:${group.primary.phone}" class="phone-text">${group.primary.phone}</a></div>
+          groupCard.innerHTML = `
+            <div class="group-header">${group.name} 值班人员</div>
+            <div class="card-body">
+              <div class="person-box is-primary">
+                <span class="role-label">主值班 Primary</span>
+                <span class="person-name">${group.primary.name}</span>
+                <a href="tel:${group.primary.phone}" class="person-phone">${group.primary.phone}</a>
               </div>
-              
-              <!-- 辅值班行 -->
-              <div class="duty-row is-secondary">
-                <div><span class="role-badge">辅值班</span></div>
-                <div class="name-text">${group.secondary.name}</div>
-                <div><a href="tel:${group.secondary.phone}" class="phone-text">${group.secondary.phone}</a></div>
+              <div class="person-box is-secondary">
+                <span class="role-label">辅值班 Secondary</span>
+                <span class="person-name">${group.secondary.name}</span>
+                <a href="tel:${group.secondary.phone}" class="person-phone">${group.secondary.phone}</a>
               </div>
             </div>
           `;
           
-          container.appendChild(card);
+          container.appendChild(groupCard);
         });
       })
       .catch(err => {
         const box = document.getElementById('error-box');
         box.style.display = 'block';
-        box.innerHTML = `⚠️ 加载失败: ${err.message}`;
+        box.innerHTML = '⚠️ 数据加载失败: ' + err.message;
       });
   </script>
 
