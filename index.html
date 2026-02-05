@@ -6,12 +6,11 @@
   <title>运维保障中心每日值班表</title>
   <style>
     :root {
-      --bg-page: #f9fafb;        /* 页面背景：极淡灰 */
-      --header-blue: #2563eb;    /* 表头蓝 */
-      --border-color: #d1d5db;   /* 网格线颜色 (深灰) */
-      --text-main: #111827;      /* 正文黑 */
-      --cell-bg-head: #f3f4f6;   /* 列表头背景 */
-      --cell-bg-white: #ffffff;
+      --bg-page: #f9fafb;
+      --header-blue: #2563eb;
+      --border-color: #d1d5db;
+      --text-main: #111827;
+      --cell-bg-head: #f3f4f6;
     }
 
     body {
@@ -20,7 +19,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Segoe UI", sans-serif;
       background: var(--bg-page);
       color: var(--text-main);
-      font-size: 14px; /* 1. 全局字号缩小，回归正常 */
+      font-size: 14px;
     }
 
     /* 顶部警示条 */
@@ -36,9 +35,10 @@
     }
 
     .container {
-      max-width: 1000px;
+      /* 修改点1：宽度设为 96% 并去掉很小的 max-width，让表格横向铺满屏幕 */
+      width: 96%;
+      max-width: 1600px; /* 在超大显示器上稍微限制一下，避免太扁 */
       margin: 30px auto;
-      padding: 0 20px;
     }
 
     header {
@@ -48,7 +48,7 @@
 
     h1 {
       color: #1e40af;
-      font-size: 24px; /* 标题字号也调适中 */
+      font-size: 24px;
       margin: 0 0 8px 0;
       font-weight: 700;
     }
@@ -58,31 +58,33 @@
       font-size: 12px;
     }
 
-    /* --- 核心表格样式 --- */
+    /* --- 表格样式 --- */
     .excel-table {
-      width: 100%;
-      border-collapse: collapse; /* 2. 边框合并，实现Excel网格线效果 */
-      margin-bottom: 30px;       /* 3. 每个表格之间的留白 */
+      width: 100%; /* 表格自身宽度100%撑满容器 */
+      border-collapse: collapse;
+      margin-bottom: 30px;
       background: #fff;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 轻微立体感 */
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* 边框定义 */
     .excel-table th, 
     .excel-table td {
-      border: 1px solid var(--border-color); /* 4. 实实在在的网格线 */
+      border: 1px solid var(--border-color);
       padding: 12px 15px;
-      text-align: left;
+      text-align: left; /* 默认左对齐，但下面会单独覆盖标题行 */
     }
 
-    /* 表格大标题 (蓝色那一行) */
+    /* 修改点2：组名标题行样式 */
     .group-header-row th {
       background-color: var(--header-blue);
       color: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 14px;
+      
+      /* 核心修改：文字居中 */
+      text-align: center !important; 
     }
 
     /* 列标题 (角色/姓名/电话) */
@@ -91,44 +93,51 @@
       color: #374151;
       font-weight: 600;
       font-size: 13px;
-      width: 20%; /* 控制列宽 */
+      text-align: center; /* 列头也居中稍微好看点，或者你可以保留left */
     }
     
-    /* 姓名列宽一点 */
-    .column-header-row th:nth-child(2) { width: 30%; }
-    .column-header-row th:nth-child(3) { width: 50%; }
+    /* 调整列宽比例，让表格分布更均匀 */
+    .column-header-row th:nth-child(1) { width: 20%; } /* 角色 */
+    .column-header-row th:nth-child(2) { width: 30%; } /* 姓名 */
+    .column-header-row th:nth-child(3) { width: 50%; } /* 电话 */
 
     /* 数据行 */
     .data-row td {
-      font-size: 14px; /* 数据字号 */
+      font-size: 14px;
       color: #1f2937;
     }
-
-    .data-row:hover {
-      background-color: #f9fafb; /* 鼠标划过微亮 */
+    
+    /* 让表格内容稍微有些留白，看着不累 */
+    .data-row td {
+      padding: 16px; 
     }
 
-    /* 角色列样式 (主值班/辅值班) */
-    .role-cell {
-      font-weight: 600;
-      color: #4b5563;
+    /* 角色列居中显示，更像Excel */
+    .data-row td:first-child {
+        text-align: center;
+        font-weight: 600;
+        color: #4b5563;
     }
     
-    .is-primary .role-cell {
-      color: #2563eb; /* 主值班文字标蓝 */
+    .is-primary td:first-child {
+        color: #2563eb;
     }
 
-    /* 姓名样式 */
     .name-cell {
       font-weight: 500;
+      text-align: center; /* 姓名也居中 */
     }
 
-    /* 电话样式 */
+    .phone-cell {
+        text-align: center; /* 电话也居中 */
+    }
+
     .phone-link {
       font-family: Consolas, "Courier New", monospace;
       color: #111827;
       text-decoration: none;
       font-weight: 500;
+      font-size: 15px; /* 电话号码稍微大一点点 */
     }
     
     .phone-link:hover {
@@ -138,10 +147,8 @@
 
     #error-box { display: none; color: red; text-align: center; margin: 20px; }
 
-    /* 移动端适配 */
     @media (max-width: 600px) {
-      .container { padding: 0 10px; }
-      .excel-table th, .excel-table td { padding: 10px; font-size: 13px; }
+      .container { width: 100%; padding: 0 10px; }
     }
   </style>
 </head>
@@ -172,19 +179,13 @@
         if (!data.groups) return;
 
         data.groups.forEach(group => {
-          // 创建一个 table 元素
           const table = document.createElement('table');
           table.className = 'excel-table';
 
-          // 核心思路：每个组就是一个标准的 Table
-          // 第一行：合并单元格的蓝色标题
-          // 第二行：列头 (角色 | 姓名 | 电话)
-          // 第三行：主值班数据
-          // 第四行：辅值班数据
-          
           table.innerHTML = `
             <thead>
               <tr class="group-header-row">
+                <!-- colspan=3 保证蓝条横跨整个表格 -->
                 <th colspan="3">${group.name}</th>
               </tr>
               <tr class="column-header-row">
@@ -195,14 +196,14 @@
             </thead>
             <tbody>
               <tr class="data-row is-primary">
-                <td class="role-cell">主值班 (Primary)</td>
+                <td>主值班 (Primary)</td>
                 <td class="name-cell">${group.primary.name}</td>
-                <td><a href="tel:${group.primary.phone}" class="phone-link">${group.primary.phone}</a></td>
+                <td class="phone-cell"><a href="tel:${group.primary.phone}" class="phone-link">${group.primary.phone}</a></td>
               </tr>
               <tr class="data-row">
-                <td class="role-cell">辅值班 (Secondary)</td>
+                <td>辅值班 (Secondary)</td>
                 <td class="name-cell">${group.secondary.name}</td>
-                <td><a href="tel:${group.secondary.phone}" class="phone-link">${group.secondary.phone}</a></td>
+                <td class="phone-cell"><a href="tel:${group.secondary.phone}" class="phone-link">${group.secondary.phone}</a></td>
               </tr>
             </tbody>
           `;
