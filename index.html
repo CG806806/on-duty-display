@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>运维保障中心每日值班表</title>
   <style>
+    /* --- 样式部分保持你喜欢的表格风格不变 --- */
     :root {
-      --bg-body: #f8fafc;        /* 极浅的灰背景，护眼 */
+      --bg-body: #f8fafc;
       --bg-white: #ffffff;
       --text-main: #1e293b;
       --text-sub: #64748b;
       --border-color: #e2e8f0;
-      --primary-color: #2563eb;  /* 科技蓝 */
-      --primary-light: #eff6ff;
+      --primary-color: #2563eb;
       --badge-primary-bg: #dbeafe;
       --badge-primary-text: #1e40af;
       --badge-sub-bg: #f1f5f9;
@@ -25,16 +25,14 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: var(--bg-body);
       color: var(--text-main);
-      -webkit-font-smoothing: antialiased;
     }
 
     .container {
-      max-width: 900px; /* 限制最大宽度，表格太宽不好看 */
+      max-width: 900px;
       margin: 0 auto;
       padding: 40px 20px 60px;
     }
 
-    /* 头部样式 */
     header {
       margin-bottom: 30px;
       padding-bottom: 20px;
@@ -62,23 +60,20 @@
       border-radius: 6px;
     }
 
-    /* 列表容器 */
     .duty-list {
       display: flex;
       flex-direction: column;
       gap: 24px;
     }
 
-    /* 单个组的容器 */
     .duty-section {
       background: var(--bg-white);
       border: 1px solid var(--border-color);
-      border-radius: 12px; /* 圆角表格容器 */
-      overflow: hidden;    /* 保证圆角不被内部内容切掉 */
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 极轻微的阴影 */
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
-    /* 组标题 */
     .group-header {
       background: #fff;
       padding: 16px 24px;
@@ -95,7 +90,6 @@
       padding-left: 14px;
     }
 
-    /* 左侧蓝条装饰，增加设计感 */
     .group-name::before {
       content: '';
       position: absolute;
@@ -108,68 +102,149 @@
       border-radius: 2px;
     }
 
-    /* 表格样式 */
     table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed; /* 固定布局，防止内容挤压 */
+      table-layout: fixed;
     }
 
-    /* 表头 */
     thead th {
       background: #f8fafc;
       color: var(--text-sub);
       font-size: 0.8rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
       padding: 12px 24px;
       text-align: left;
       border-bottom: 1px solid var(--border-color);
     }
 
-    /* 表格行 */
-    tbody tr {
-      border-bottom: 1px solid var(--border-color);
-      transition: background-color 0.15s ease;
-    }
-    
-    tbody tr:last-child {
-      border-bottom: none; /* 最后一行没底边框 */
-    }
-
-    tbody tr:hover {
-      background-color: #f8fafc; /* 鼠标悬停高亮 */
-    }
+    tbody tr { border-bottom: 1px solid var(--border-color); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background-color: #f8fafc; }
 
     td {
       padding: 16px 24px;
       vertical-align: middle;
     }
 
-    /* 角色标签样式 */
     .badge {
       display: inline-block;
       padding: 4px 10px;
       border-radius: 999px;
       font-size: 0.8rem;
       font-weight: 600;
-      line-height: 1;
     }
 
-    .badge.primary {
-      background: var(--badge-primary-bg);
-      color: var(--badge-primary-text);
-    }
+    .badge.primary { background: var(--badge-primary-bg); color: var(--badge-primary-text); }
+    .badge.secondary { background: var(--badge-sub-bg); color: var(--badge-sub-text); }
 
-    .badge.secondary {
-      background: var(--badge-sub-bg);
-      color: var(--badge-sub-text);
-    }
+    .name-text { font-weight: 600; font-size: 1rem; }
 
-    /* 姓名 */
-    .name-text {
-      font-weight: 600;
-      color: var(--text-main);
+    .phone-link {
+      font-family: "SF Mono", "Monaco", "Consolas", monospace;
+      color: var(--text-sub);
+      text-decoration: none;
       font-size: 1rem;
     }
+    .phone-link:hover { color: var(--primary-color); text-decoration: underline; }
+
+    /* 错误提示样式 */
+    #error-box {
+        color: #dc2626;
+        background: #fee2e2;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        display: none;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 20px 15px; }
+      td, th { padding: 12px 16px; }
+      th:first-child, td:first-child { width: 90px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>🛡️ 运维保障中心每日值班</h1>
+      <div class="update-time">更新时间：<span id="update-time">Loading...</span></div>
+    </header>
+
+    <!-- 错误信息容器 -->
+    <div id="error-box"></div>
+
+    <div class="duty-list" id="groups"></div>
+  </div>
+
+  <script>
+    // 加上时间戳 ?t=... 强制 GitHub Pages 不使用旧缓存
+    fetch('./data.json?t=' + new Date().getTime())
+      .then(res => {
+        if (!res.ok) {
+            // 如果文件找不到(404)或者服务器报错
+            throw new Error(`无法读取文件 (状态码: ${res.status})`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        document.getElementById('update-time').textContent = data.updateTime;
+        const container = document.getElementById('groups');
+        container.innerHTML = ''; // 清空加载文字
+
+        if (!data.groups || data.groups.length === 0) {
+            throw new Error('data.json 内容格式不对，找不到 groups 数据');
+        }
+
+        data.groups.forEach(group => {
+          const section = document.createElement('div');
+          section.className = 'duty-section';
+
+          section.innerHTML = `
+            <div class="group-header">
+              <div class="group-name">${group.name}</div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th width="25%">角色</th>
+                  <th width="35%">姓名</th>
+                  <th width="40%">联系电话</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge primary">主值班</span></td>
+                  <td><div class="name-text">${group.primary.name}</div></td>
+                  <td><a href="tel:${group.primary.phone}" class="phone-link">${group.primary.phone}</a></td>
+                </tr>
+                <tr>
+                  <td><span class="badge secondary">辅值班</span></td>
+                  <td><div class="name-text">${group.secondary.name}</div></td>
+                  <td><a href="tel:${group.secondary.phone}" class="phone-link">${group.secondary.phone}</a></td>
+                </tr>
+              </tbody>
+            </table>
+          `;
+          container.appendChild(section);
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        const errorBox = document.getElementById('error-box');
+        errorBox.style.display = 'block';
+        errorBox.innerHTML = `
+            <strong>数据加载失败</strong><br>
+            原因：${err.message}<br><br>
+            请检查 data.json 是否上传，或者 JSON 格式是否正确。<br>
+            <small>提示：按 F12 打开控制台看详细红字报错</small>
+        `;
+      });
+  </script>
+
+</body>
+</html>
