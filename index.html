@@ -15,7 +15,7 @@
     }
 
     .container {
-      padding: 40px 4% 60px;
+      padding: 40px 1.5% 60px;           /* 左右边距极小，最大化铺满 */
     }
 
     header {
@@ -24,7 +24,7 @@
     }
 
     h1 {
-      font-size: 2.1rem;
+      font-size: 2.2rem;
       font-weight: 700;
       margin: 0 0 8px;
       color: #1d4ed8;
@@ -38,7 +38,7 @@
     .duty-list {
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 30px;
     }
 
     .duty-group {
@@ -47,56 +47,44 @@
       border: 1px solid #e2e8f0;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       overflow: hidden;
-      transition: all 0.2s ease;
-    }
-
-    .duty-group:hover {
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-      border-color: #3b82f6;
     }
 
     .group-title {
       background: #3b82f6;
-      padding: 14px 24px;
-      font-size: 1.3rem;
+      padding: 14px 0;
+      font-size: 1.35rem;
       font-weight: 600;
       color: white;
+      text-align: center;              /* 标题居中 */
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      text-align: center;              /* 所有单元格文字居中 */
     }
 
     th, td {
-      padding: 14px 20px;
-      text-align: left;
-      border-bottom: 1px solid #f1f5f9;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;      /* 完整表格边框 */
     }
 
     th {
-      background: #f8fafc;
+      background: #f1f5f9;
       color: #334155;
       font-weight: 600;
       font-size: 1rem;
     }
 
-    td.role {
-      width: 110px;
-      color: #475569;
-      font-weight: 500;
-    }
-
-    td.name {
-      font-weight: 600;
+    td {
+      font-size: 1rem;
       color: #0f172a;
     }
 
     td.phone {
       font-family: Consolas, monospace;
       color: #1d4ed8;
-      font-size: 1.05rem;
-      letter-spacing: 0.6px;
+      font-weight: 500;
     }
 
     tr:hover {
@@ -104,11 +92,10 @@
     }
 
     @media (max-width: 768px) {
-      .container { padding: 30px 5% 50px; }
-      h1 { font-size: 1.8rem; }
-      .group-title { font-size: 1.2rem; padding: 12px 20px; }
-      th, td { padding: 12px 16px; font-size: 0.95rem; }
-      td.role { width: 100px; }
+      .container { padding: 30px 3% 50px; }
+      h1 { font-size: 1.9rem; }
+      .group-title { font-size: 1.25rem; }
+      th, td { padding: 12px 12px; font-size: 0.95rem; }
     }
   </style>
 </head>
@@ -135,26 +122,27 @@
           const groupEl = document.createElement('div');
           groupEl.className = 'duty-group';
 
+          // 只显示 group.name，不加任何后缀
           groupEl.innerHTML = `
-            <div class="group-title">${group.name} 值班人员</div>
+            <div class="group-title">${group.name}</div>
             <table>
               <thead>
                 <tr>
-                  <th class="role">角色</th>
+                  <th>角色</th>
                   <th>姓名</th>
                   <th>联系电话</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td class="role">主值班</td>
-                  <td class="name">${group.primary.name}</td>
-                  <td class="phone">${group.primary.phone}</td>
+                  <td>主值班</td>
+                  <td>${group.primary.name}</td>
+                  <td>${group.primary.phone}</td>
                 </tr>
                 <tr>
-                  <td class="role">辅值班</td>
-                  <td class="name">${group.secondary.name}</td>
-                  <td class="phone">${group.secondary.phone}</td>
+                  <td>辅值班</td>
+                  <td>${group.secondary.name}</td>
+                  <td>${group.secondary.phone}</td>
                 </tr>
               </tbody>
             </table>
@@ -166,7 +154,7 @@
       .catch(err => {
         console.error(err);
         document.getElementById('groups').innerHTML = 
-          '<p style="text-align:center; color:#ef4444; font-size:1.2rem; padding:30px 0;">数据加载失败，请检查 data.json</p>';
+          '<p style="text-align:center; color:#ef4444; font-size:1.3rem; padding:40px 0;">数据加载失败，请检查 data.json</p>';
       });
   </script>
 
