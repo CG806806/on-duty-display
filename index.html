@@ -15,7 +15,7 @@
     }
 
     .container {
-      padding: 20px 1.5% 30px;         /* 极致压缩上下留白 */
+      padding: 20px 1.5% 30px;
     }
 
     header {
@@ -27,7 +27,7 @@
       font-size: 1.65rem;
       font-weight: 700;
       margin: 0 0 4px;
-      color: #1e40af;
+      color: #1d4ed8;
     }
 
     .update {
@@ -38,7 +38,7 @@
     .duty-list {
       display: flex;
       flex-direction: column;
-      gap: 18px;                       /* 分组间距最小化 */
+      gap: 18px;
     }
 
     .duty-group {
@@ -49,7 +49,7 @@
     }
 
     .group-title {
-      background: #1e40af;             /* 标题栏深蓝 */
+      background: #60a5fa;             /* 改成浅蓝色，更清爽 */
       padding: 9px 0;
       font-size: 1.15rem;
       font-weight: 600;
@@ -82,7 +82,7 @@
     }
 
     td.name {
-      font-weight: 700;                /* 姓名突出 */
+      font-weight: 700;
       color: #111827;
     }
 
@@ -90,7 +90,7 @@
       font-family: Consolas, monospace;
       font-size: 0.95rem;
       font-weight: 600;
-      color: #dc2626;                  /* 手机号醒目红色，与标题区分 */
+      color: #dc2626;                  /* 手机号红色，醒目且与浅蓝标题区分 */
       letter-spacing: 0.4px;
     }
 
@@ -111,8 +111,8 @@
 
   <div class="container">
     <header>
-      <h1>运维保障中心每日值班人员</h1>
-      <div class="update">最后更新：<span id="update-time"></span></div>
+      <h1>运维保障中心今日值班人员</h1>
+      <div class="update">更新：<span id="update-time"></span></div>
     </header>
 
     <div class="duty-list" id="groups"></div>
