@@ -15,69 +15,68 @@
     }
 
     .container {
-      padding: 40px 1.5% 60px;           /* 左右边距极小，最大化铺满 */
+      padding: 24px 2% 32px;           /* 上下留白大幅减少 */
     }
 
     header {
       text-align: center;
-      margin-bottom: 36px;
+      margin-bottom: 24px;
     }
 
     h1 {
-      font-size: 2.2rem;
+      font-size: 1.7rem;               /* 标题进一步缩小 */
       font-weight: 700;
-      margin: 0 0 8px;
+      margin: 0 0 4px;
       color: #1d4ed8;
     }
 
     .update {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #64748b;
     }
 
     .duty-list {
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 20px;                       /* 分组间距最小化 */
     }
 
     .duty-group {
       background: #ffffff;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       overflow: hidden;
     }
 
     .group-title {
       background: #3b82f6;
-      padding: 14px 0;
-      font-size: 1.35rem;
+      padding: 10px 0;
+      font-size: 1.15rem;              /* 标题栏字体缩小 */
       font-weight: 600;
       color: white;
-      text-align: center;              /* 标题居中 */
+      text-align: center;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      text-align: center;              /* 所有单元格文字居中 */
+      text-align: center;
     }
 
     th, td {
-      padding: 14px 16px;
-      border: 1px solid #e2e8f0;      /* 完整表格边框 */
+      padding: 8px 12px;               /* 表格行高大幅压缩 */
+      border: 1px solid #e2e8f0;
+      font-size: 0.88rem;              /* 文字更小，但仍清晰 */
     }
 
     th {
-      background: #f1f5f9;
+      background: #f8fafc;
       color: #334155;
       font-weight: 600;
-      font-size: 1rem;
     }
 
     td {
-      font-size: 1rem;
       color: #0f172a;
     }
 
@@ -92,10 +91,10 @@
     }
 
     @media (max-width: 768px) {
-      .container { padding: 30px 3% 50px; }
-      h1 { font-size: 1.9rem; }
-      .group-title { font-size: 1.25rem; }
-      th, td { padding: 12px 12px; font-size: 0.95rem; }
+      .container { padding: 20px 3% 30px; }
+      h1 { font-size: 1.5rem; }
+      .group-title { font-size: 1.05rem; padding: 8px 0; }
+      th, td { padding: 6px 10px; font-size: 0.82rem; }
     }
   </style>
 </head>
@@ -122,7 +121,6 @@
           const groupEl = document.createElement('div');
           groupEl.className = 'duty-group';
 
-          // 只显示 group.name，不加任何后缀
           groupEl.innerHTML = `
             <div class="group-title">${group.name}</div>
             <table>
@@ -154,7 +152,7 @@
       .catch(err => {
         console.error(err);
         document.getElementById('groups').innerHTML = 
-          '<p style="text-align:center; color:#ef4444; font-size:1.3rem; padding:40px 0;">数据加载失败，请检查 data.json</p>';
+          '<p style="text-align:center; color:#ef4444; font-size:1.1rem; padding:20px 0;">数据加载失败，请检查 data.json</p>';
       });
   </script>
 
