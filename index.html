@@ -5,165 +5,147 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>运维保障中心每日值班表</title>
   <style>
-    /* --- 样式部分保持你喜欢的表格风格不变 --- */
     :root {
-      --bg-body: #f8fafc;
-      --bg-white: #ffffff;
-      --text-main: #1e293b;
-      --text-sub: #64748b;
-      --border-color: #e2e8f0;
-      --primary-color: #2563eb;
-      --badge-primary-bg: #dbeafe;
-      --badge-primary-text: #1e40af;
-      --badge-sub-bg: #f1f5f9;
-      --badge-sub-text: #475569;
+      --primary-color: #0052cc;  /* 经典的深蓝 */
+      --header-bg: #f4f5f7;      /* 表头灰 */
+      --border-color: #dfe1e6;   /* 边框色 */
+      --highlight-bg: #e3fcef;   /* 主值班高亮背景(淡绿) */
+      --text-main: #172b4d;
     }
 
     body {
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg-body);
+      font-family: -apple-system, "Microsoft YaHei", sans-serif;
+      background: #ffffff;
       color: var(--text-main);
+      overflow-x: hidden; /* 防止横向滚动条 */
     }
 
+    /* 容器设为流式布局，几乎铺满全屏 */
     .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px 60px;
+      width: 98%;
+      margin: 20px auto;
     }
 
     header {
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
+      margin-bottom: 20px;
+      padding: 0 10px;
     }
 
     h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 1.8rem;
       margin: 0;
-      color: #0f172a;
+      color: #0052cc;
     }
 
     .update-time {
-      font-size: 0.9rem;
-      color: var(--text-sub);
-      background: #fff;
-      padding: 6px 12px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #5e6c84;
     }
 
-    .duty-list {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .duty-section {
-      background: var(--bg-white);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-
-    .group-header {
-      background: #fff;
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-    }
-
-    .group-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #334155;
-      position: relative;
-      padding-left: 14px;
-    }
-
-    .group-name::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 4px;
-      height: 16px;
-      background: var(--primary-color);
-      border-radius: 2px;
-    }
-
-    table {
+    /* 核心表格样式 */
+    .full-table {
       width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
+      border-collapse: collapse; /* 合并边框 */
+      background: #fff;
+      font-size: 1.1rem; /* 字号加大，大屏看更清楚 */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    thead th {
-      background: #f8fafc;
-      color: var(--text-sub);
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      padding: 12px 24px;
+    /* 表头 */
+    .full-table th {
+      background: var(--header-bg);
+      color: #42526e;
+      font-weight: 700;
+      padding: 18px;
       text-align: left;
-      border-bottom: 1px solid var(--border-color);
+      border: 1px solid var(--border-color);
+      text-transform: uppercase;
     }
 
-    tbody tr { border-bottom: 1px solid var(--border-color); }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background-color: #f8fafc; }
-
-    td {
-      padding: 16px 24px;
+    /* 单元格 */
+    .full-table td {
+      padding: 16px 20px;
+      border: 1px solid var(--border-color);
       vertical-align: middle;
     }
 
-    .badge {
+    /* 组名列：加粗居中 */
+    .group-cell {
+      font-weight: 800;
+      background-color: #fafbfc;
+      color: #0052cc;
+      text-align: center !important;
+      width: 20%;
+    }
+
+    /* 角色标签 */
+    .role-badge {
       display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .role-primary {
+      background: #deebff;
+      color: #0052cc;
+    }
+
+    .role-secondary {
+      background: #eae6ff;
+      color: #403294;
+    }
+
+    /* 姓名列 */
+    .name-cell {
       font-weight: 600;
+      font-size: 1.15rem;
+      width: 25%;
     }
 
-    .badge.primary { background: var(--badge-primary-bg); color: var(--badge-primary-text); }
-    .badge.secondary { background: var(--badge-sub-bg); color: var(--badge-sub-text); }
-
-    .name-text { font-weight: 600; font-size: 1rem; }
-
+    /* 电话列 */
     .phone-link {
-      font-family: "SF Mono", "Monaco", "Consolas", monospace;
-      color: var(--text-sub);
+      font-family: Consolas, Monaco, monospace;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
       text-decoration: none;
-      font-size: 1rem;
+      letter-spacing: 1px;
     }
-    .phone-link:hover { color: var(--primary-color); text-decoration: underline; }
+    
+    .phone-link:hover {
+      color: #0052cc;
+      text-decoration: underline;
+    }
 
-    /* 错误提示样式 */
+    /* 主值班行稍微高亮，突出重点 */
+    tr.is-primary {
+      background-color: rgba(222, 235, 255, 0.15);
+    }
+
+    /* 错误提示 */
     #error-box {
         color: #dc2626;
         background: #fee2e2;
         padding: 20px;
-        border-radius: 8px;
         text-align: center;
         display: none;
-        margin-top: 20px;
+        border: 1px solid #fca5a5;
+        margin: 20px;
     }
-
-    @media (max-width: 600px) {
-      .container { padding: 20px 15px; }
-      td, th { padding: 12px 16px; }
-      th:first-child, td:first-child { width: 90px; }
+    
+    /* 移动端简单适配 */
+    @media (max-width: 768px) {
+      .full-table { font-size: 0.9rem; }
+      .phone-link { font-size: 1rem; }
+      .group-cell { width: 25%; }
     }
   </style>
 </head>
@@ -171,78 +153,72 @@
 
   <div class="container">
     <header>
-      <h1>🛡️ 运维保障中心每日值班</h1>
-      <div class="update-time">更新时间：<span id="update-time">Loading...</span></div>
+      <h1>🛡️ 运维保障中心每日值班表</h1>
+      <div class="update-time">📅 更新时间：<span id="update-time">Loading...</span></div>
     </header>
 
-    <!-- 错误信息容器 -->
     <div id="error-box"></div>
 
-    <div class="duty-list" id="groups"></div>
+    <table class="full-table">
+      <thead>
+        <tr>
+          <th style="text-align:center">业务组</th>
+          <th>角色</th>
+          <th>姓名</th>
+          <th>联系电话</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- JS 将在这里插入表格行 -->
+      </tbody>
+    </table>
   </div>
 
   <script>
-    // 加上时间戳 ?t=... 强制 GitHub Pages 不使用旧缓存
+    // 保持之前的 fetch 逻辑，因为它已经通了
     fetch('./data.json?t=' + new Date().getTime())
       .then(res => {
-        if (!res.ok) {
-            // 如果文件找不到(404)或者服务器报错
-            throw new Error(`无法读取文件 (状态码: ${res.status})`);
-        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
       .then(data => {
         document.getElementById('update-time').textContent = data.updateTime;
-        const container = document.getElementById('groups');
-        container.innerHTML = ''; // 清空加载文字
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = ''; 
 
-        if (!data.groups || data.groups.length === 0) {
-            throw new Error('data.json 内容格式不对，找不到 groups 数据');
-        }
+        if (!data.groups) throw new Error('No groups data found');
 
         data.groups.forEach(group => {
-          const section = document.createElement('div');
-          section.className = 'duty-section';
+          // 我们要生成两行：一行是主值班，一行是辅值班
+          // 第一行的“组名”单元格需要 rowspan=2，让它跨两行显示
 
-          section.innerHTML = `
-            <div class="group-header">
-              <div class="group-name">${group.name}</div>
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th width="25%">角色</th>
-                  <th width="35%">姓名</th>
-                  <th width="40%">联系电话</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><span class="badge primary">主值班</span></td>
-                  <td><div class="name-text">${group.primary.name}</div></td>
-                  <td><a href="tel:${group.primary.phone}" class="phone-link">${group.primary.phone}</a></td>
-                </tr>
-                <tr>
-                  <td><span class="badge secondary">辅值班</span></td>
-                  <td><div class="name-text">${group.secondary.name}</div></td>
-                  <td><a href="tel:${group.secondary.phone}" class="phone-link">${group.secondary.phone}</a></td>
-                </tr>
-              </tbody>
-            </table>
+          // --- 第一行：主值班 ---
+          const trPrimary = document.createElement('tr');
+          trPrimary.className = 'is-primary';
+          trPrimary.innerHTML = `
+            <td class="group-cell" rowspan="2">${group.name}</td>
+            <td><span class="role-badge role-primary">主值班</span></td>
+            <td class="name-cell">${group.primary.name}</td>
+            <td><a href="tel:${group.primary.phone}" class="phone-link">${group.primary.phone}</a></td>
           `;
-          container.appendChild(section);
+          tbody.appendChild(trPrimary);
+
+          // --- 第二行：辅值班 ---
+          const trSecondary = document.createElement('tr');
+          trSecondary.innerHTML = `
+            <!-- 注意：这里不需要写组名 td 了，因为上一行 rowspan=2 占位了 -->
+            <td><span class="role-badge role-secondary">辅值班</span></td>
+            <td class="name-cell">${group.secondary.name}</td>
+            <td><a href="tel:${group.secondary.phone}" class="phone-link">${group.secondary.phone}</a></td>
+          `;
+          tbody.appendChild(trSecondary);
         });
       })
       .catch(err => {
+        const box = document.getElementById('error-box');
+        box.style.display = 'block';
+        box.innerHTML = `⚠️ 数据加载异常: ${err.message}`;
         console.error(err);
-        const errorBox = document.getElementById('error-box');
-        errorBox.style.display = 'block';
-        errorBox.innerHTML = `
-            <strong>数据加载失败</strong><br>
-            原因：${err.message}<br><br>
-            请检查 data.json 是否上传，或者 JSON 格式是否正确。<br>
-            <small>提示：按 F12 打开控制台看详细红字报错</small>
-        `;
       });
   </script>
 
