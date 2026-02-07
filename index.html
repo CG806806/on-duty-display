@@ -8,9 +8,9 @@
     :root {
       --bg-page: #f9fafb;
       --header-blue: #2563eb;
-      --border-color: #d1d5db;
-      --text-main: #111827;
-      --cell-bg-head: #f3f4f6;
+      --border-color: #cbd5e1; /* 边框稍微淡一点 */
+      --text-main: #1e293b;
+      --cell-bg-head: #f1f5f9;
     }
 
     body {
@@ -19,139 +19,149 @@
       font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Segoe UI", sans-serif;
       background: var(--bg-page);
       color: var(--text-main);
+      /* 核心：为了尽量不出现滚动条 */
+      height: 100vh; 
       overflow-x: hidden;
     }
 
-    /* 头部容器 */
-    .header-container {
+    /* 1. 警示条：变细，变紧凑 */
+    .alert-bar {
+      background-color: #fef2f2;
+      color: #dc2626;
       text-align: center;
-      padding: 30px 20px 10px; /* 底部padding减小 */
-      margin-bottom: 20px;
+      padding: 4px 0; /* 极小的内边距 */
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid #fee2e2;
+    }
+
+    /* 2. 头部区域：高度大幅压缩 */
+    .header-container {
       position: relative;
+      text-align: center;
+      padding: 10px 20px; /* 减少留白 */
+      margin-bottom: 5px;
     }
 
     h1 {
       color: #1e40af;
-      font-size: 36px;
-      margin: 0 0 15px 0;
+      font-size: 22px; /* 标题改小 */
+      margin: 0;
       font-weight: 800;
-      letter-spacing: 4px;
+      letter-spacing: 2px;
       text-transform: uppercase;
+      line-height: 1.2;
     }
 
-    /* 警示条 (现在移到了标题下面) */
-    .alert-bar {
-      display: inline-block; /* 只有文字长度 */
-      background-color: #fef2f2;
-      color: #dc2626;
-      padding: 8px 20px;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: 20px;
-      border: 1px solid #fee2e2;
-      margin-bottom: 15px;
-    }
-
-    /* 右上角时间容器 (单行显示) */
+    /* 右上角时间：紧凑型 */
     .time-container {
       position: absolute;
-      right: 20px;
-      top: 30px; /* 对齐顶部 */
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
       display: flex;
-      align-items: center; /* 垂直居中 */
-      gap: 8px;
+      align-items: center;
+      gap: 10px;
       font-family: "Consolas", "Monaco", monospace;
-      background: #fff;
-      padding: 6px 12px;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      font-size: 13px;
     }
 
-    .date-text {
-      color: #374151;
-      font-weight: 600;
-      font-size: 16px;
-    }
+    .date-text { color: #64748b; font-weight: 600; }
+    .time-text { color: #2563eb; font-weight: 700; font-size: 16px; }
 
-    .time-text {
-      color: #2563eb; /* 蓝色高亮时间 */
-      font-weight: 700;
-      font-size: 18px;
-    }
-
+    /* 3. 容器：几乎贴边 */
     .container {
       width: 99%;
-      margin: 0 auto 40px;
+      margin: 0 auto;
     }
 
-    /* --- 表格样式 --- */
+    /* --- 表格样式：紧凑模式 --- */
     .excel-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 30px;
+      margin-bottom: 8px; /* 表格间距极小 */
       background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
+    /* 边框和单元格 */
     .excel-table th, 
     .excel-table td {
       border: 1px solid var(--border-color);
-      padding: 16px;
+      padding: 6px 4px; /* 核心：大幅减少内边距 */
       text-align: center !important; 
       vertical-align: middle;
-      font-size: 15px;
+      font-size: 13px; /* 字体改小 */
+      height: 28px;    /* 强制限制行高 */
     }
 
+    /* 组名标题行 */
     .group-header-row th {
       background-color: var(--header-blue);
       color: #fff;
-      font-size: 18px;
+      font-size: 15px; /* 组名稍微大一点点 */
       font-weight: 700;
-      letter-spacing: 2px;
-      padding: 15px;
+      padding: 6px;
     }
 
+    /* 列标题 */
     .column-header-row th {
       background-color: var(--cell-bg-head);
-      color: #374151;
+      color: #334155;
       font-weight: 700;
+      font-size: 12px;
     }
 
+    /* 数据行 */
     .data-row:hover { background-color: #f8fafc; }
-    .is-primary { color: #2563eb; font-weight: 600; }
     
-    .name-text { font-size: 16px; font-weight: 600; }
-    
+    /* 角色列 */
+    .role-cell {
+      font-weight: 600;
+      color: #64748b;
+      font-size: 12px;
+    }
+    .is-primary .role-cell { color: #2563eb; }
+
+    /* 姓名 */
+    .name-text { font-weight: 600; font-size: 14px; }
+
+    /* 电话 */
     .phone-link {
       font-family: Consolas, monospace;
-      color: #111827;
+      color: #0f172a;
       text-decoration: none;
       font-weight: 600;
-      font-size: 16px;
+      font-size: 14px;
     }
     .phone-link:hover { text-decoration: underline; color: var(--header-blue); }
 
-    #error-box { display: none; color: red; text-align: center; margin: 20px; }
+    /* 错误提示 */
+    #error-box { display: none; color: red; text-align: center; margin: 10px; font-size: 12px; }
 
-    @media (max-width: 900px) {
-      .time-container { position: static; margin-top: 10px; justify-content: center; }
+    /* 针对特别矮的屏幕（比如笔记本），再压一下 */
+    @media (max-height: 768px) {
+      h1 { font-size: 18px; }
+      .header-container { padding: 5px 20px; }
+      .excel-table { margin-bottom: 5px; }
+      .excel-table th, .excel-table td { padding: 4px 2px; height: 24px; font-size: 12px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- 头部区域 -->
   <div class="header-container">
     <h1>运维保障中心每日值班表</h1>
     
-    <!-- 警示条移到这里 -->
+    <!-- 警示语放在标题下方 -->
     <div class="alert-bar">
       ⚠️ 如遇紧急故障请直接拨打主值班电话
     </div>
 
-    <!-- 右上角时间：日期+时分秒 -->
+    <!-- 右上角时间 -->
     <div class="time-container">
-      <span class="date-text" id="display-date">Loading...</span>
+      <span class="date-text" id="display-date">--</span>
       <span class="time-text" id="display-time">00:00:00</span>
     </div>
   </div>
@@ -162,23 +172,16 @@
   </div>
 
   <script>
-    let jsonDate = ""; // 存储从JSON获取的日期字符串
-
-    // 1. 启动时钟
+    // 1. 启动时钟 (包含秒针)
     function startClock() {
       const timeEl = document.getElementById('display-time');
       const dateEl = document.getElementById('display-date');
       
       setInterval(() => {
         const now = new Date();
-        const timeStr = now.toLocaleTimeString('en-GB', { hour12: false }); // HH:mm:ss
+        // 强制 24小时制 HH:mm:ss
+        const timeStr = now.toLocaleTimeString('en-GB', { hour12: false });
         timeEl.textContent = timeStr;
-        
-        // 如果 JSON 加载成功，日期显示 JSON 的日期；否则显示当前日期
-        if (!jsonDate) {
-            const dateStr = now.toISOString().split('T')[0];
-            dateEl.textContent = dateStr;
-        }
       }, 1000);
     }
     startClock();
@@ -187,9 +190,8 @@
     fetch('./data.json?t=' + new Date().getTime())
       .then(res => res.json())
       .then(data => {
-        // 保存并显示 JSON 中的日期
-        jsonDate = data.updateTime;
-        document.getElementById('display-date').textContent = jsonDate;
+        // 设置右上角日期
+        document.getElementById('display-date').textContent = data.updateTime;
 
         const container = document.getElementById('tables-container');
         container.innerHTML = '';
@@ -208,12 +210,12 @@
             </thead>
             <tbody>
               <tr class="data-row is-primary">
-                <td>主值班 (Primary)</td>
+                <td class="role-cell">主值班 (Primary)</td>
                 <td><div class="name-text">${group.primary.name}</div></td>
                 <td><a href="tel:${group.primary.phone}" class="phone-link">${group.primary.phone}</a></td>
               </tr>
               <tr class="data-row">
-                <td>辅值班 (Secondary)</td>
+                <td class="role-cell">辅值班 (Secondary)</td>
                 <td><div class="name-text">${group.secondary.name}</div></td>
                 <td><a href="tel:${group.secondary.phone}" class="phone-link">${group.secondary.phone}</a></td>
               </tr>
@@ -224,7 +226,7 @@
       })
       .catch(err => {
         document.getElementById('error-box').style.display = 'block';
-        document.getElementById('error-box').innerText = '数据加载失败: ' + err.message;
+        document.getElementById('error-box').innerText = 'Data Error: ' + err.message;
       });
   </script>
 </body>
