@@ -22,79 +22,67 @@
       overflow-x: hidden;
     }
 
-    /* 顶部警示条 */
-    .top-alert-bar {
-      width: 100%;
-      background-color: #fef2f2;
-      color: #dc2626;
-      text-align: center;
-      padding: 8px 0;
-      font-size: 14px;
-      font-weight: 600;
-      border-bottom: 1px solid #fee2e2;
-    }
-
     /* 头部容器 */
     .header-container {
-      position: relative;
       text-align: center;
-      padding: 30px 20px;
-      margin-bottom: 10px;
+      padding: 30px 20px 10px; /* 底部padding减小 */
+      margin-bottom: 20px;
+      position: relative;
     }
 
-    /* 标题样式 */
     h1 {
       color: #1e40af;
       font-size: 36px;
-      margin: 0;
+      margin: 0 0 15px 0;
       font-weight: 800;
       letter-spacing: 4px;
       text-transform: uppercase;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
 
-    /* --- 右上角时间容器优化 --- */
+    /* 警示条 (现在移到了标题下面) */
+    .alert-bar {
+      display: inline-block; /* 只有文字长度 */
+      background-color: #fef2f2;
+      color: #dc2626;
+      padding: 8px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 20px;
+      border: 1px solid #fee2e2;
+      margin-bottom: 15px;
+    }
+
+    /* 右上角时间容器 (单行显示) */
     .time-container {
       position: absolute;
       right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
+      top: 30px; /* 对齐顶部 */
       display: flex;
-      flex-direction: column; /* 上下排列日期和时间，更整齐 */
-      align-items: flex-end;  /* 靠右对齐 */
-      gap: 4px;
-    }
-
-    /* 值班日期标签 */
-    .roster-date-tag {
-      font-size: 13px;
-      color: #6b7280;
+      align-items: center; /* 垂直居中 */
+      gap: 8px;
+      font-family: "Consolas", "Monaco", monospace;
       background: #fff;
-      padding: 4px 10px;
+      padding: 6px 12px;
       border: 1px solid #e5e7eb;
-      border-radius: 4px;
-      font-weight: 500;
+      border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* 实时时钟样式 */
-    .live-clock {
-      font-family: "Consolas", "Monaco", monospace; /* 等宽字体，防止抖动 */
-      font-size: 20px;
+    .date-text {
+      color: #374151;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .time-text {
+      color: #2563eb; /* 蓝色高亮时间 */
       font-weight: 700;
-      color: #1e40af; /* 蓝色高亮 */
-      background: #eff6ff;
-      padding: 4px 12px;
-      border-radius: 4px;
-      border: 1px solid #bfdbfe;
-      letter-spacing: 1px;
+      font-size: 18px;
     }
 
     .container {
       width: 99%;
-      max-width: none; 
       margin: 0 auto 40px;
-      padding: 0 5px;
-      box-sizing: border-box;
     }
 
     /* --- 表格样式 --- */
@@ -128,58 +116,43 @@
       background-color: var(--cell-bg-head);
       color: #374151;
       font-weight: 700;
-      font-size: 14px;
     }
 
-    .data-row td { color: #1f2937; }
     .data-row:hover { background-color: #f8fafc; }
-
-    .role-text { font-weight: 600; color: #4b5563; }
-    .is-primary .role-text { color: #2563eb; }
-    .name-text { font-weight: 600; font-size: 16px; }
-
+    .is-primary { color: #2563eb; font-weight: 600; }
+    
+    .name-text { font-size: 16px; font-weight: 600; }
+    
     .phone-link {
-      font-family: Consolas, "Courier New", monospace;
+      font-family: Consolas, monospace;
       color: #111827;
       text-decoration: none;
       font-weight: 600;
       font-size: 16px;
-      letter-spacing: 0.5px;
     }
     .phone-link:hover { text-decoration: underline; color: var(--header-blue); }
 
     #error-box { display: none; color: red; text-align: center; margin: 20px; }
 
-    /* 移动端适配 */
     @media (max-width: 900px) {
-      .header-container { padding-bottom: 10px; }
-      .time-container {
-        position: static;
-        transform: none;
-        flex-direction: row; /* 手机上变成一行 */
-        justify-content: center;
-        margin-top: 15px;
-      }
-      .live-clock { font-size: 16px; }
-      h1 { font-size: 24px; }
+      .time-container { position: static; margin-top: 10px; justify-content: center; }
     }
   </style>
 </head>
 <body>
 
-  <div class="top-alert-bar">
-    ⚠️ 如遇紧急故障请直接拨打主值班电话
-  </div>
-
   <div class="header-container">
     <h1>运维保障中心每日值班表</h1>
     
-    <!-- 右上角时间区域 -->
+    <!-- 警示条移到这里 -->
+    <div class="alert-bar">
+      ⚠️ 如遇紧急故障请直接拨打主值班电话
+    </div>
+
+    <!-- 右上角时间：日期+时分秒 -->
     <div class="time-container">
-      <!-- 1. 这里是从 JSON 读取的值班日期 -->
-      <div class="roster-date-tag">📅 值班日期：<span id="update-date">...</span></div>
-      <!-- 2. 这里是 JS 生成的实时时钟 -->
-      <div class="live-clock" id="realtime-clock">00:00:00</div>
+      <span class="date-text" id="display-date">Loading...</span>
+      <span class="time-text" id="display-time">00:00:00</span>
     </div>
   </div>
 
@@ -189,36 +162,35 @@
   </div>
 
   <script>
-    // --- 1. 实时时钟逻辑 ---
+    let jsonDate = ""; // 存储从JSON获取的日期字符串
+
+    // 1. 启动时钟
     function startClock() {
-      const clockElement = document.getElementById('realtime-clock');
+      const timeEl = document.getElementById('display-time');
+      const dateEl = document.getElementById('display-date');
       
-      function update() {
+      setInterval(() => {
         const now = new Date();
-        // 获取时分秒，并保证是2位数（比如 9 变成 09）
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const timeStr = now.toLocaleTimeString('en-GB', { hour12: false }); // HH:mm:ss
+        timeEl.textContent = timeStr;
         
-        // 更新页面文字
-        clockElement.textContent = `${hours}:${minutes}:${seconds}`;
-      }
-
-      update(); // 立即执行一次，避免刷新有延迟
-      setInterval(update, 1000); // 每1000毫秒（1秒）执行一次
+        // 如果 JSON 加载成功，日期显示 JSON 的日期；否则显示当前日期
+        if (!jsonDate) {
+            const dateStr = now.toISOString().split('T')[0];
+            dateEl.textContent = dateStr;
+        }
+      }, 1000);
     }
-
-    // 启动时钟
     startClock();
 
-
-    // --- 2. 读取 data.json 逻辑 ---
+    // 2. 加载数据
     fetch('./data.json?t=' + new Date().getTime())
       .then(res => res.json())
       .then(data => {
-        // 更新值班日期
-        document.getElementById('update-date').textContent = data.updateTime;
-        
+        // 保存并显示 JSON 中的日期
+        jsonDate = data.updateTime;
+        document.getElementById('display-date').textContent = jsonDate;
+
         const container = document.getElementById('tables-container');
         container.innerHTML = '';
 
@@ -227,44 +199,33 @@
         data.groups.forEach(group => {
           const table = document.createElement('table');
           table.className = 'excel-table';
-          
-          // 加上 "值班" 后缀
           const groupDisplayName = group.name.includes('值班') ? group.name : group.name + ' 值班';
 
           table.innerHTML = `
             <thead>
-              <tr class="group-header-row">
-                <th colspan="3">${groupDisplayName}</th>
-              </tr>
-              <tr class="column-header-row">
-                <th width="20%">角色</th>
-                <th width="30%">姓名</th>
-                <th width="50%">联系电话</th>
-              </tr>
+              <tr class="group-header-row"><th colspan="3">${groupDisplayName}</th></tr>
+              <tr class="column-header-row"><th width="20%">角色</th><th width="30%">姓名</th><th width="50%">联系电话</th></tr>
             </thead>
             <tbody>
               <tr class="data-row is-primary">
-                <td><span class="role-text">主值班 (Primary)</span></td>
+                <td>主值班 (Primary)</td>
                 <td><div class="name-text">${group.primary.name}</div></td>
                 <td><a href="tel:${group.primary.phone}" class="phone-link">${group.primary.phone}</a></td>
               </tr>
               <tr class="data-row">
-                <td><span class="role-text">辅值班 (Secondary)</span></td>
+                <td>辅值班 (Secondary)</td>
                 <td><div class="name-text">${group.secondary.name}</div></td>
                 <td><a href="tel:${group.secondary.phone}" class="phone-link">${group.secondary.phone}</a></td>
               </tr>
             </tbody>
           `;
-          
           container.appendChild(table);
         });
       })
       .catch(err => {
-        const box = document.getElementById('error-box');
-        box.style.display = 'block';
-        box.innerHTML = '⚠️ 数据加载失败: ' + err.message;
+        document.getElementById('error-box').style.display = 'block';
+        document.getElementById('error-box').innerText = '数据加载失败: ' + err.message;
       });
   </script>
-
 </body>
 </html>
